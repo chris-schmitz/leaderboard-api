@@ -1,8 +1,8 @@
 const express = require("express")
 const app = express()
-const bodyParser = require("body-parser")
-const sqlite3 = require("sqlite3").verbose()
 const path = require("path")
+const bodyParser = require("body-parser") // * needed for post requests
+const sqlite3 = require("sqlite3").verbose() // * needed for our data storage, specifically a sqlite database
 
 const port = 3000
 const dbPath = path.join(__dirname, "database", "leaderboard.db")
@@ -17,11 +17,13 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // * Here's our post enpdoint
 // ! note that there is no validation here, we're just grabbing the body data, submitting it, and returning success or fail
-app.post("/score", (request, response) => {
+app.post("/score", async (request, response) => {
   try {
     const payload = request.body
     console.log(payload)
-    storeScore(payload.initials, payload.score)
+
+    await storeScore(payload.initials, payload.score)
+
     response.json({ succeful: true })
   } catch (error) {
     response.json({ succeful: false, error })
@@ -33,7 +35,8 @@ app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
 )
 
-// | === Database setup ===
+// * === Database setup ===
+// * If you need to change the schema definition you can do it here
 db.run(
   "CREATE TABLE IF NOT EXISTS scores(id INTEGER PRIMARY KEY AUTOINCREMENT, initials TEXT NOT NULL, score INTEGER)"
 )
@@ -50,7 +53,7 @@ function storeScore(initials, score) {
       statement.run([initials, score], (error) => {
         if (error) return reject(error)
 
-        const recordId = this.lastID
+        const recordId = statement.lastID
         console.log(`ENTRY WAS ADDED TO ROW: ${recordId}`)
         resolve(recordId)
       })

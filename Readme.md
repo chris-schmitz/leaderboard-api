@@ -26,6 +26,8 @@ Send a post request with the following parameters
 - initials (string)
 - score (integer)
 
-```
+## The data storage
 
-```
+We're using a sqlite database for this example and the database is not ignored in the codebase. Normally you'd want to ignore it, but it's part of this magic bullet proof of concept.
+
+The database itself can be found in `database/leaderboard.db` and you can use the sqlite3 cli or a gui like TablePlus to explore it.
