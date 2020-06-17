@@ -30,6 +30,20 @@ app.post("/score", async (request, response) => {
   }
 })
 
+app.get("/highscores", async (request, response) => {
+  db.all(
+    "SELECT initials, score FROM scores ORDER BY score DESC LIMIT 10",
+    (error, rows) => {
+      if (error) {
+        console.log(error)
+        response.json({ success: false, error })
+      }
+      console.log(rows)
+      response.json({ success: true, scores: rows })
+    }
+  )
+})
+
 // * Hook into the given port
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)

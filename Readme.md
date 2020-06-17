@@ -21,10 +21,16 @@ In its current state this codebase is just an example.
 
 ## Submitting a score
 
-Send a post request with the following parameters
+Send a post request to the `score` endpoint with the following parameters
 
 - initials (string)
 - score (integer)
+
+## Retrieving the high scores
+
+To get the high scores you can do a get request to the `highscores` endpoint
+
+![high scores](readme_attachments/highscores.gif)
 
 ## The data storage
 
